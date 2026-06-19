@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kenny's App Portfolio</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0f1e;
+      --surface: #111827;
+      --surface2: #1a2235;
+      --border: rgba(255,255,255,0.08);
+      --text: #f1f5f9;
+      --muted: #64748b;
+      --blue: #3b82f6;
+      --blue-glow: rgba(59,130,246,0.15);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      padding: 48px 24px 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(59,130,246,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .avatar {
+      width: 64px; height: 64px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #3b82f6, #6366f1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 800; color: white;
+      margin: 0 auto 20px;
+      box-shadow: 0 0 0 4px rgba(59,130,246,0.2), 0 20px 40px rgba(59,130,246,0.15);
+    }
+    header h1 {
+      font-size: clamp(24px, 5vw, 36px);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    header h1 span { color: var(--blue); }
+    header p {
+      color: var(--muted);
+      font-size: 15px;
+      margin-top: 8px;
+    }
+
+    /* ── Search ── */
+    .search-bar {
+      max-width: 420px;
+      margin: 28px auto 0;
+      position: relative;
+    }
+    .search-bar input {
+      width: 100%;
+      padding: 12px 16px 12px 44px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-bar input:focus { border-color: rgba(59,130,246,0.5); }
+    .search-bar input::placeholder { color: var(--muted); }
+    .search-bar svg {
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      color: var(--muted); pointer-events: none;
+    }
+
+    /* ── Stats bar ── */
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat-value { font-size: 22px; font-weight: 700; color: var(--blue); }
+    .stat-label { font-size: 11px; color: var(--muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    /* ── Grid ── */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    /* ── App Card ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.3s;
+      border-radius: 20px;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(59,130,246,0.35);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3), 0 0 0 1px rgba(59,130,246,0.1);
+    }
+    .card:hover::before { opacity: 1; }
+
+    .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+
+    .app-icon {
+      width: 52px; height: 52px;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .card-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-left: auto; }
+    .badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .badge-live { background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.25); }
+    .badge-dev  { background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.25); }
+    .badge-new  { background: rgba(99,102,241,0.15); color: #a5b4fc; border: 1px solid rgba(99,102,241,0.25); }
+
+    .card h2 { font-size: 17px; font-weight: 700; line-height: 1.2; }
+    .card p  { font-size: 13px; color: var(--muted); line-height: 1.6; flex: 1; }
+
+    .card-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tag {
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 8px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .updated-dot {
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #4ade80;
+      margin-right: 6px;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .open-btn {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 12px; font-weight: 600;
+      color: var(--blue);
+      background: none; border: none;
+      cursor: pointer; text-decoration: none;
+      padding: 0;
+    }
+    .open-btn svg { width: 13px; height: 13px; }
+
+    /* ── Sublinks ── */
+    .sublinks {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      padding-top: 10px;
+    }
+    .sublink {
+      font-size: 12px;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 5px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface2);
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .sublink:hover {
+      background: rgba(59,130,246,0.12);
+      border-color: rgba(59,130,246,0.3);
+      color: #93c5fd;
+    }
+
+    /* ── Coming soon card ── */
+    .card-coming {
+      opacity: 0.5;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 24px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    /* ── No results ── */
+    #no-results {
+      display: none;
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+    }
+    #no-results svg { margin: 0 auto 16px; display: block; opacity: 0.3; }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      header { padding: 36px 20px 24px; }
+      .grid { grid-template-columns: 1fr; }
+      .stats { gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="avatar">KV</div>
+  <h1>Kenny's <span>App Portfolio</span></h1>
+  <p>All platforms, tools, and projects — one place.</p>
+  <div class="search-bar">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input type="text" id="search" placeholder="Search apps..." autocomplete="off" />
+  </div>
+</header>
+
+<div class="stats">
+  <div class="stat"><div class="stat-value" id="total-count">—</div><div class="stat-label">Total Apps</div></div>
+  <div class="stat"><div class="stat-value" id="live-count">—</div><div class="stat-label">Live</div></div>
+  <div class="stat"><div class="stat-value" id="last-update">—</div><div class="stat-label">Last Updated</div></div>
+</div>
+
+<main>
+  <div class="section-title">Live Applications</div>
+  <div class="grid" id="grid"></div>
+  <div id="no-results">
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    No apps match your search.
+  </div>
+</main>
+
+<footer>
+  Last synced: <span id="sync-time">—</span> · Updates automatically from GitHub
+</footer>
+
+<script>
+// ─────────────────────────────────────────────────────────────
+// CONFIGURATION — add/edit apps here
+// Replace GITHUB_USERNAME with your actual GitHub username once repos are pushed.
+// ─────────────────────────────────────────────────────────────
+const GITHUB_USERNAME = 'kenbhoot'
+
+const APPS = [
+  {
+    id: 'apsm',
+    name: 'AI Property Security Manager™',
+    description: 'Full-stack AI security platform for homeowners, retail centers, hotels, apartment complexes, warehouses, and multi-location commercial owners. AI incident detection, daily briefings, lead generation, access control, insurance assistant, and 24/7 AI customer service.',
+    icon: '🛡️',
+    iconBg: 'linear-gradient(135deg, #1e3a5f, #1d4ed8)',
+    status: 'live',
+    url: 'https://ai-property-security-manager.vercel.app',
+    repo: 'ai-property-security-manager',
+    tags: ['Next.js', 'AI', 'Security', 'SaaS'],
+    sublinks: [
+      { label: '🎬 Client Demo', path: '/demo' },
+      { label: '📊 Dashboard', path: '/dashboard' },
+      { label: '🚨 Incidents', path: '/incidents' },
+      { label: '📷 Cameras', path: '/cameras' },
+      { label: '🤖 AI Briefings', path: '/briefings' },
+      { label: '👥 Leads', path: '/leads' },
+    ],
+  },
+  {
+    id: 'motel-command-center',
+    name: 'Motel Command Center',
+    description: 'All-in-one operations platform for motel owners and managers. Real-time room status, housekeeping dispatch, check-in/check-out tracking, maintenance requests, revenue reporting, and guest communication — from a single command dashboard.',
+    icon: '🏨',
+    iconBg: 'linear-gradient(135deg, #3b1f5e, #7c3aed)',
+    status: 'live',
+    url: 'https://motel-command-center.vercel.app',
+    repo: 'motel-command-center',
+    tags: ['Next.js', 'Hospitality', 'Operations', 'SaaS'],
+    sublinks: [
+      { label: '📊 Dashboard', path: '/dashboard' },
+      { label: '🛏 Room Status', path: '/rooms' },
+      { label: '🧹 Housekeeping', path: '/housekeeping' },
+      { label: '📈 Revenue', path: '/analytics' },
+    ],
+  },
+  {
+    id: 'gullidanda-golf',
+    name: 'Gullidanda Golf',
+    description: 'Golf club and course management platform. Tee time booking, member management, scorecard tracking, pro shop inventory, event scheduling, and club analytics — everything a golf operation needs in one elegant platform.',
+    icon: '⛳',
+    iconBg: 'linear-gradient(135deg, #14301a, #15803d)',
+    status: 'live',
+    url: 'https://gullidanda-golf.vercel.app',
+    repo: 'gullidanda-golf',
+    tags: ['Next.js', 'Golf', 'Booking', 'SaaS'],
+    sublinks: [
+      { label: '📅 Tee Times', path: '/tee-times' },
+      { label: '👥 Members', path: '/members' },
+      { label: '🏆 Leaderboard', path: '/leaderboard' },
+      { label: '🛒 Pro Shop', path: '/shop' },
+    ],
+  },
+  // ── ADD NEW APPS BELOW THIS LINE ──
+  // {
+  //   id: 'my-new-app',
+  //   name: 'My New App',
+  //   description: 'What it does.',
+  //   icon: '🚀',
+  //   iconBg: 'linear-gradient(135deg, #1e1b4b, #7c3aed)',
+  //   status: 'live',        // 'live' | 'dev' | 'new'
+  //   url: 'https://my-new-app.vercel.app',
+  //   repo: 'my-new-app',   // GitHub repo name for auto-update timestamps
+  //   tags: ['React', 'TypeScript'],
+  //   sublinks: [
+  //     { label: '📋 Dashboard', path: '/dashboard' },
+  //   ],
+  // },
+]
+
+// ─────────────────────────────────────────────────────────────
+// Fetch last-updated times from GitHub API
+// ─────────────────────────────────────────────────────────────
+async function fetchLastUpdated(repo) {
+  if (GITHUB_USERNAME === 'YOUR_GITHUB_USERNAME' || !repo) return null
+  try {
+    const res = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${repo}`)
+    if (!res.ok) return null
+    const data = await res.json()
+    return data.pushed_at ? new Date(data.pushed_at) : null
+  } catch { return null }
+}
+
+function timeAgo(date) {
+  if (!date) return null
+  const diff = (Date.now() - date.getTime()) / 1000
+  if (diff < 60) return 'just now'
+  if (diff < 3600) return `${Math.floor(diff/60)}m ago`
+  if (diff < 86400) return `${Math.floor(diff/3600)}h ago`
+  if (diff < 86400*7) return `${Math.floor(diff/86400)}d ago`
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+}
+
+function badgeHtml(status) {
+  if (status === 'live') return '<span class="badge badge-live">● Live</span>'
+  if (status === 'dev')  return '<span class="badge badge-dev">⚙ In Dev</span>'
+  if (status === 'new')  return '<span class="badge badge-new">✦ New</span>'
+  return ''
+}
+
+function renderCard(app, lastUpdated) {
+  const isLive = app.status === 'live' && app.url
+  const updatedText = lastUpdated
+    ? `<span class="updated-dot"></span>Updated ${timeAgo(lastUpdated)}`
+    : (app.status === 'live' ? '<span class="updated-dot"></span>Tracking updates' : 'In development')
+
+  const sublinksHtml = (isLive && app.sublinks.length)
+    ? `<div class="sublinks">${app.sublinks.map(s =>
+        `<a class="sublink" href="${app.url}${s.path}" target="_blank" rel="noopener">${s.label}</a>`
+      ).join('')}</div>`
+    : ''
+
+  const openBtn = isLive
+    ? `<a class="open-btn" href="${app.url}" target="_blank" rel="noopener">
+        Open app
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+          <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+        </svg>
+      </a>`
+    : `<span style="color:var(--muted);font-size:12px">Coming soon</span>`
+
+  return `
+    <div class="card ${!isLive ? 'card-coming' : ''}" data-name="${app.name.toLowerCase()}" data-tags="${app.tags.join(' ').toLowerCase()}">
+      <div class="card-top">
+        <div class="app-icon" style="background:${app.iconBg}">${app.icon}</div>
+        <div class="card-badges">${badgeHtml(app.status)}</div>
+      </div>
+      <div>
+        <h2>${app.name}</h2>
+      </div>
+      <p>${app.description}</p>
+      <div class="card-tags">${app.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+      ${sublinksHtml}
+      <div class="card-footer">
+        <span>${updatedText}</span>
+        ${openBtn}
+      </div>
+    </div>`
+}
+
+// ─────────────────────────────────────────────────────────────
+// Init
+// ─────────────────────────────────────────────────────────────
+async function init() {
+  const grid = document.getElementById('grid')
+
+  // Render cards immediately (no timestamps yet)
+  const timestamps = new Map()
+  grid.innerHTML = APPS.map(app => renderCard(app, null)).join('')
+
+  // Update stats
+  document.getElementById('total-count').textContent = APPS.length
+  document.getElementById('live-count').textContent = APPS.filter(a => a.status === 'live').length
+
+  // Fetch GitHub timestamps in parallel
+  const results = await Promise.all(APPS.map(app => fetchLastUpdated(app.repo)))
+  APPS.forEach((app, i) => { if (results[i]) timestamps.set(app.id, results[i]) })
+
+  // Re-render with timestamps
+  grid.innerHTML = APPS.map((app, i) => renderCard(app, results[i])).join('')
+
+  // Find most recent update for stats
+  const latest = results.filter(Boolean).sort((a,b) => b-a)[0]
+  document.getElementById('last-update').textContent = latest ? timeAgo(latest) : '—'
+  document.getElementById('sync-time').textContent = new Date().toLocaleTimeString()
+
+  // Search
+  document.getElementById('search').addEventListener('input', e => {
+    const q = e.target.value.toLowerCase().trim()
+    const cards = document.querySelectorAll('.card')
+    let visible = 0
+    cards.forEach(card => {
+      const match = !q || card.dataset.name.includes(q) || card.dataset.tags.includes(q)
+      card.style.display = match ? '' : 'none'
+      if (match) visible++
+    })
+    document.getElementById('no-results').style.display = visible === 0 ? 'block' : 'none'
+  })
+}
+
+init()
+</script>
+</body>
+</html>
