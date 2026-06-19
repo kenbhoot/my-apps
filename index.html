@@ -299,7 +299,80 @@
 
 <main>
   <div class="section-title">Live Applications</div>
-  <div class="grid" id="grid"></div>
+  <div class="grid" id="grid">
+
+    <!-- AI Property Security Manager -->
+    <div class="card" data-name="ai property security manager" data-tags="next.js ai security saas">
+      <div class="card-top">
+        <div class="app-icon" style="background:linear-gradient(135deg,#1e3a5f,#1d4ed8)">🛡️</div>
+        <div class="card-badges"><span class="badge badge-live">● Live</span></div>
+      </div>
+      <h2>AI Property Security Manager™</h2>
+      <p>Full-stack AI security platform for homeowners, retail centers, hotels, apartment complexes, warehouses, and multi-location commercial owners. AI incident detection, daily briefings, lead generation, access control, insurance assistant, and 24/7 AI customer service.</p>
+      <div class="card-tags">
+        <span class="tag">Next.js</span><span class="tag">AI</span><span class="tag">Security</span><span class="tag">SaaS</span>
+      </div>
+      <div class="sublinks">
+        <a class="sublink" href="https://ai-property-security-manager.vercel.app/demo">🎬 Client Demo</a>
+        <a class="sublink" href="https://ai-property-security-manager.vercel.app/dashboard">📊 Dashboard</a>
+        <a class="sublink" href="https://ai-property-security-manager.vercel.app/incidents">🚨 Incidents</a>
+        <a class="sublink" href="https://ai-property-security-manager.vercel.app/cameras">📷 Cameras</a>
+        <a class="sublink" href="https://ai-property-security-manager.vercel.app/briefings">🤖 AI Briefings</a>
+        <a class="sublink" href="https://ai-property-security-manager.vercel.app/leads">👥 Leads</a>
+      </div>
+      <div class="card-footer">
+        <span><span class="updated-dot"></span><span id="ts-apsm">Tracking updates</span></span>
+        <a class="open-btn" href="https://ai-property-security-manager.vercel.app">Open app ↗</a>
+      </div>
+    </div>
+
+    <!-- Motel Command Center -->
+    <div class="card" data-name="motel command center" data-tags="next.js hospitality operations saas">
+      <div class="card-top">
+        <div class="app-icon" style="background:linear-gradient(135deg,#3b1f5e,#7c3aed)">🏨</div>
+        <div class="card-badges"><span class="badge badge-live">● Live</span></div>
+      </div>
+      <h2>Motel Command Center</h2>
+      <p>All-in-one operations platform for motel owners and managers. Real-time room status, housekeeping dispatch, check-in/check-out tracking, maintenance requests, revenue reporting, and guest communication — from a single command dashboard.</p>
+      <div class="card-tags">
+        <span class="tag">Next.js</span><span class="tag">Hospitality</span><span class="tag">Operations</span><span class="tag">SaaS</span>
+      </div>
+      <div class="sublinks">
+        <a class="sublink" href="https://motel-command-center.vercel.app/dashboard">📊 Dashboard</a>
+        <a class="sublink" href="https://motel-command-center.vercel.app/rooms">🛏 Room Status</a>
+        <a class="sublink" href="https://motel-command-center.vercel.app/housekeeping">🧹 Housekeeping</a>
+        <a class="sublink" href="https://motel-command-center.vercel.app/analytics">📈 Revenue</a>
+      </div>
+      <div class="card-footer">
+        <span><span class="updated-dot"></span><span id="ts-motel">Tracking updates</span></span>
+        <a class="open-btn" href="https://motel-command-center.vercel.app">Open app ↗</a>
+      </div>
+    </div>
+
+    <!-- Gullidanda Golf -->
+    <div class="card" data-name="gullidanda golf" data-tags="next.js golf booking saas">
+      <div class="card-top">
+        <div class="app-icon" style="background:linear-gradient(135deg,#14301a,#15803d)">⛳</div>
+        <div class="card-badges"><span class="badge badge-live">● Live</span></div>
+      </div>
+      <h2>Gullidanda Golf</h2>
+      <p>Golf club and course management platform. Tee time booking, member management, scorecard tracking, pro shop inventory, event scheduling, and club analytics — everything a golf operation needs in one elegant platform.</p>
+      <div class="card-tags">
+        <span class="tag">Next.js</span><span class="tag">Golf</span><span class="tag">Booking</span><span class="tag">SaaS</span>
+      </div>
+      <div class="sublinks">
+        <a class="sublink" href="https://gullidanda-golf.vercel.app/tee-times">📅 Tee Times</a>
+        <a class="sublink" href="https://gullidanda-golf.vercel.app/members">👥 Members</a>
+        <a class="sublink" href="https://gullidanda-golf.vercel.app/leaderboard">🏆 Leaderboard</a>
+        <a class="sublink" href="https://gullidanda-golf.vercel.app/shop">🛒 Pro Shop</a>
+      </div>
+      <div class="card-footer">
+        <span><span class="updated-dot"></span><span id="ts-golf">Tracking updates</span></span>
+        <a class="open-btn" href="https://gullidanda-golf.vercel.app">Open app ↗</a>
+      </div>
+    </div>
+
+  </div>
   <div id="no-results">
     <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
     No apps match your search.
@@ -462,33 +535,34 @@ function renderCard(app, lastUpdated) {
 // ─────────────────────────────────────────────────────────────
 // Init
 // ─────────────────────────────────────────────────────────────
+const TS_MAP = [
+  { repo: 'ai-property-security-manager', elId: 'ts-apsm' },
+  { repo: 'motel-command-center',         elId: 'ts-motel' },
+  { repo: 'gullidanda-golf',              elId: 'ts-golf' },
+]
+
 async function init() {
-  const grid = document.getElementById('grid')
+  // Stats
+  const cards = document.querySelectorAll('.card')
+  const live  = document.querySelectorAll('.badge-live').length
+  document.getElementById('total-count').textContent = cards.length
+  document.getElementById('live-count').textContent  = live
+  document.getElementById('sync-time').textContent   = new Date().toLocaleTimeString()
 
-  // Render cards immediately (no timestamps yet)
-  const timestamps = new Map()
-  grid.innerHTML = APPS.map(app => renderCard(app, null)).join('')
-
-  // Update stats
-  document.getElementById('total-count').textContent = APPS.length
-  document.getElementById('live-count').textContent = APPS.filter(a => a.status === 'live').length
-
-  // Fetch GitHub timestamps in parallel
-  const results = await Promise.all(APPS.map(app => fetchLastUpdated(app.repo)))
-  APPS.forEach((app, i) => { if (results[i]) timestamps.set(app.id, results[i]) })
-
-  // Re-render with timestamps
-  grid.innerHTML = APPS.map((app, i) => renderCard(app, results[i])).join('')
-
-  // Find most recent update for stats
-  const latest = results.filter(Boolean).sort((a,b) => b-a)[0]
-  document.getElementById('last-update').textContent = latest ? timeAgo(latest) : '—'
-  document.getElementById('sync-time').textContent = new Date().toLocaleTimeString()
+  // Fetch timestamps without touching card HTML
+  const results = await Promise.all(TS_MAP.map(t => fetchLastUpdated(t.repo)))
+  let latest = null
+  TS_MAP.forEach((t, i) => {
+    if (!results[i]) return
+    const el = document.getElementById(t.elId)
+    if (el) el.textContent = 'Updated ' + timeAgo(results[i])
+    if (!latest || results[i] > latest) latest = results[i]
+  })
+  if (latest) document.getElementById('last-update').textContent = timeAgo(latest)
 
   // Search
   document.getElementById('search').addEventListener('input', e => {
     const q = e.target.value.toLowerCase().trim()
-    const cards = document.querySelectorAll('.card')
     let visible = 0
     cards.forEach(card => {
       const match = !q || card.dataset.name.includes(q) || card.dataset.tags.includes(q)
